@@ -2,9 +2,10 @@
 package entity;
 
 import java.sql.Date;
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Product {
+    private String name;
     // mã sản phẩm
     private String id;
     // giá sản phẩm
@@ -13,16 +14,19 @@ public class Product {
     private int stockQuantity;
     // danh mục sản phẩm
     private String category;
+
     // đơn vị tính
     public String unit;
     // đường dẫn ảnh
     public String imageUrl;
     // ngày tạo sản phẩm
     public Date createdAt;
-    
 
-    public Product(String id, double price, int stockQuantity, String category,String unit, String imageUrl, Date createdAt) {
+    private static ArrayList<Product> products = new ArrayList<>();
 
+    public Product(String name, String id, double price, int stockQuantity, String category, String unit,
+            String imageUrl, Date createdAt) {
+        this.name = name;
         this.id = id;
         this.price = price;
         this.stockQuantity = stockQuantity;
@@ -30,7 +34,14 @@ public class Product {
         this.unit = unit;
         this.imageUrl = imageUrl;
         this.createdAt = createdAt;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getId() {
@@ -70,78 +81,91 @@ public class Product {
         this.category = category;
     }
 
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
     // method
 
     public void addProduct() {
-        // code to add product to database or list
+        products.add(this);
         System.out.println("Product added successfully!");
     }
 
-    public void updateProduct() {
-        // code to update product in database or list
+    public void updateProduct(String name,
+            double price,
+            int stockQuantity,
+            String category) {
+
+        this.name = name;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.category = category;
+
         System.out.println("Product updated successfully!");
     }
 
-    public void removeProduct() {
-        // code to remove product from database or list
+    public void removeProduct(String id) {
+
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getId().equalsIgnoreCase(id)) {
+                products.remove(i);
+                break;
+            }
+
+        }
         System.out.println("Product removed successfully!");
     }
 
- public void viewAll(){
-
-
- System.out.println(" viewAll successfully!");    
- }
-
- public void searchByNameOrCategory(){
-
-    System.out.println(" searchByNameOrCategory successfully!");
- }
-
- public boolean isInStock(){
-    return stockQuantity > 0;
- }
-
- public double applyDiscount(double rate){
-    if (rate > 0 && rate < 1) {
-        return price * (1 - rate);
-    } else {
-        System.out.println("Invalid discount rate. Please enter a value between 0 and 1.");
-        return price;
-    }
- }
-
-    while(true)
-
-    {
-
-        try {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Enter the number of products to add:");
-            int n = Integer.parseInt(sc.nextLine());
-            Product P1[] = new Product[n];
-  
-            for (int i = 0; i < n; i++) {
-                    System.out.println("Enter product ID:");
-                    String id = sc.nextLine();
-                    System.out.println("Enter product price:");
-                    double price = sc.nextDouble();
-                    System.out.println("Enter stock quantity:");
-                    int stockQuantity = sc.nextInt();
-                    sc.nextLine(); // Consume the newline character
-                    System.out.println("Enter product category:");
-                    String category = sc.nextLine();
-    
-                    P1[i] = new Product(id, price, stockQuantity, category, id, category, createdAt);
-                    P1[i].addProduct();
-                }
-
-
-
-        } catch (Exception e) {
-            System.out.println("Invalid input. Please try again.");
-
+    public void viewAll() {
+        for (Product p : products) {
+            System.out.println("Product ID: " + p.getId());
+            System.out.println("Name: " + p.getName());
+            System.out.println("Price: " + p.getPrice());
+            System.out.println("Stock Quantity: " + p.getStockQuantity());
+            System.out.println("Category: " + p.getCategory());
+            System.out.println("-----------------------------");
         }
+        System.out.println(" viewAll successfully!");
+    }
+
+    public void searchByNameOrCategory(String keyword) {
+        for (Product p : products) {
+            if (p.getName().toLowerCase().contains(keyword.toLowerCase())
+                    || p.getCategory().toLowerCase().contains(keyword.toLowerCase())) {
+                System.out.println("Product found: " + p.getId());
+            }
+        }
+        System.out.println(" searchByNameOrCategory successfully!");
+    }
+
+    public boolean isInStock() {
+        return stockQuantity > 0;
+    }
+
+    public double applyDiscount(double rate) {
+
+        return price * (1 - rate);
 
     }
 
