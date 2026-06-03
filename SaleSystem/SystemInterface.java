@@ -4,13 +4,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import entity.Customerlist;
-import entity.Customer;
 public class SystemInterface {
 
     public static void main(String[] args) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
-        Customerlist customerlist = new Customerlist();
-
         try (Scanner sc = new Scanner(System.in)) {
             while (true) {
                 try {
@@ -36,7 +33,8 @@ public class SystemInterface {
                             break;
                         case 2:
                             System.out.println("Manage Customers");
-                            customerlist.chooseService();
+                                Customerlist customerList = new Customerlist();
+                                customerList.chooseService();
                             break;
                         case 3:
                             System.out.println("Manage Sales Transactions");
